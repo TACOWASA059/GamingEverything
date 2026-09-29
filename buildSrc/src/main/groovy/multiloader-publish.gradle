@@ -12,7 +12,10 @@ def changelogFile = rootProject.file('CHANGELOG.md')
 def releaseNotes = changelogFile.exists()
         ? changelogFile.text.trim()
         : "${mod_name} ${version} for Minecraft ${minecraft_version}." as String
-def uploadJar = tasks.named('jar')
+// Older Loom versions produce a development jar from `jar` and the distributable jar from
+// `remapJar`. Newer Loom and the Forge-family loaders publish `jar` directly.
+def uploadTaskName = tasks.findByName('remapJar') != null ? 'remapJar' : 'jar'
+def uploadJar = tasks.named(uploadTaskName)
 
 tasks.register('publishCurseForge', TaskPublishCurseForge) {
     group = 'publishing'
