@@ -36,3 +36,10 @@ Each completed screenshot directory contains:
 - `latest.log`
 
 The final pass must use the JARs in `release-artifacts/` through isolated Prism Launcher instances.
+
+## Current Prism limitation
+
+The isolated Prism 10.0.5 root recognizes all four 26.2 instances, their packaged JARs, and the test
+world. In this execution environment, however, Prism attempts to refresh component metadata even with
+its offline launch flag and receives `Permission denied` from the network sandbox before spawning the
+Minecraft child process. No screenshot has been fabricated or marked complete as a substitute.
