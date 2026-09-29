@@ -1,0 +1,21 @@
+plugins {
+    id 'multiloader-loader'
+    id 'net.neoforged.moddev'
+}
+
+neoForge {
+    version = neoforge_version
+    runs {
+        client {
+            client()
+            gameDirectory = file('run')
+        }
+    }
+    mods {
+        "${mod_id}" { sourceSet sourceSets.main }
+    }
+}
+
+dependencies {
+    compileOnly project(':common')
+}

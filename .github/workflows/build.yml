@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '21'
       - uses: gradle/actions/setup-gradle@v4
       - name: Build release artifacts
         run: ./gradlew prepareRelease --stacktrace
@@ -21,4 +21,3 @@ jobs:
         with:
           name: gaming-everything-${{ github.ref_name }}
           path: release-artifacts/
-

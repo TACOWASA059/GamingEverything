@@ -1,22 +1,27 @@
 plugins {
     id 'fabric-loom' version '1.7-SNAPSHOT' apply false
-    id 'net.neoforged.moddev.legacyforge' version '2.0.77' apply false
+    id 'net.minecraftforge.gradle' version '6.0.54' apply false
+    id 'net.neoforged.moddev' version '2.0.141' apply false
 }
 
 tasks.register('prepareRelease') {
     group = 'distribution'
     description = 'Builds loader jars and writes a release bundle with SHA-256 checksums.'
-    dependsOn(':fabric:build', ':forge:build')
+    dependsOn(':fabric:build', ':forge:build', ':neoforge:build')
 
     doLast {
         def outputDir = layout.projectDirectory.dir('release-artifacts').asFile
-        delete(outputDir)
+        project.delete(outputDir)
         outputDir.mkdirs()
 
-        [project(':fabric'), project(':forge')].each { loaderProject ->
+        [project(':fabric'), project(':forge'), project(':neoforge')].each { loaderProject ->
             loaderProject.layout.buildDirectory.dir('libs').get().asFile
                     .listFiles()
-                    .findAll { it.name.endsWith('.jar') && !it.name.endsWith('-sources.jar') && !it.name.endsWith('-javadoc.jar') }
+                    .findAll {
+                        it.name.endsWith("-${project.version}.jar") &&
+                                !it.name.endsWith('-sources.jar') &&
+                                !it.name.endsWith('-javadoc.jar')
+                    }
                     .each { sourceJar ->
                         copy { from(sourceJar); into(outputDir) }
                     }

@@ -1,33 +1,57 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
 plugins {
     id 'multiloader-loader'
-    id 'net.neoforged.moddev.legacyforge'
+    id 'net.minecraftforge.gradle'
 }
+
+apply plugin: 'org.spongepowered.mixin'
 
 mixin {
-    add(sourceSets.main, "${mod_id}.refmap.json")
-    config("${mod_id}.mixins.json")
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
 }
 
-legacyForge {
-    version = "${minecraft_version}-${forge_version}"
-    parchment {
-        minecraftVersion = parchment_minecraft
-        mappingsVersion = parchment_version
-    }
+minecraft {
+    mappings channel: 'official', version: minecraft_version
     runs {
-        client { client() }
-        server { server() }
+        client {
+            workingDirectory project.file('run')
+            mods {
+                gamingeverything {
+                    source sourceSets.main
+                }
+            }
+        }
+        server {
+            workingDirectory project.file('run')
+            args '--nogui'
+            mods {
+                gamingeverything {
+                    source sourceSets.main
+                }
+            }
+        }
     }
-    mods { "${mod_id}" { sourceSet sourceSets.main } }
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
-    compileOnly project(':common')
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor('org.spongepowered:mixin:0.8.5-SNAPSHOT:processor')
 }
 
 jar {
-    finalizedBy('reobfJar')
     manifest.attributes(['MixinConfigs': "${mod_id}.mixins.json"])
 }
-
