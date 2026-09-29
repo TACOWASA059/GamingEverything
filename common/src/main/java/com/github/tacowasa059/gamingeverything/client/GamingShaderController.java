@@ -16,6 +16,8 @@ public final class GamingShaderController {
         setEntities(c.enabled && c.entities, c.entitySpeed, c.entityWavelength, camera);
         setItems(c.enabled && c.items, c.itemSpeed, c.itemWavelength, camera);
         setSpecial(c.enabled && c.specialEffects, c.entitySpeed, c.entityWavelength, camera);
+        set(GameRenderer.getParticleShader(), c.enabled && c.particles,
+                c.entitySpeed, c.entityWavelength, camera);
     }
 
     public static void applyFirstPersonSettings() {
@@ -32,6 +34,8 @@ public final class GamingShaderController {
         set(GameRenderer.getRendertypeCutoutShader(), enabled, speed, wavelength, camera);
         set(GameRenderer.getRendertypeTranslucentShader(), enabled, speed, wavelength, camera);
         set(GameRenderer.getRendertypeCrumblingShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeTranslucentMovingBlockShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeTripwireShader(), enabled, speed, wavelength, camera);
     }
 
     private static void setEntities(boolean enabled, float speed, float wavelength, Vec3 camera) {
@@ -44,6 +48,11 @@ public final class GamingShaderController {
         set(GameRenderer.getRendertypeEntityTranslucentEmissiveShader(), enabled, speed, wavelength, camera);
         set(GameRenderer.getRendertypeEntitySmoothCutoutShader(), enabled, speed, wavelength, camera);
         set(GameRenderer.getRendertypeArmorCutoutNoCullShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeEntityDecalShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeEntityNoOutlineShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeEntityShadowShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeEntityAlphaShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeBreezeWindShader(), enabled, speed, wavelength, camera);
     }
 
     private static void setItems(boolean enabled, float speed, float wavelength, Vec3 camera) {
@@ -63,9 +72,17 @@ public final class GamingShaderController {
         set(GameRenderer.getRendertypeBeaconBeamShader(), enabled, speed, wavelength, camera);
         set(GameRenderer.getRendertypeLeashShader(), enabled, speed, wavelength, camera);
         set(GameRenderer.getRendertypeTextShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeTextIntensityShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeTextBackgroundShader(), enabled, speed, wavelength, camera);
         set(GameRenderer.getRendertypeTextSeeThroughShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeTextIntensitySeeThroughShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeTextBackgroundSeeThroughShader(), enabled, speed, wavelength, camera);
         set(GameRenderer.getRendertypeEndPortalShader(), enabled, speed, wavelength, camera);
         set(GameRenderer.getRendertypeEndGatewayShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeCloudsShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeLightningShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeLinesShader(), enabled, speed, wavelength, camera);
+        set(GameRenderer.getRendertypeOutlineShader(), enabled, speed, wavelength, camera);
     }
 
     private static void set(ShaderInstance shader, boolean enabled, float speed,
