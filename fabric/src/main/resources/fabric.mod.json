@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "gamingeverything",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${description}",
+  "authors": ["${mod_author}"],
+  "license": "${license}",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["com.github.tacowasa059.gamingeverything.fabric.GamingEverythingFabric"]
+  },
+  "mixins": ["${mod_id}.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.14",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}",
+    "java": ">=17"
+  }
+}
+

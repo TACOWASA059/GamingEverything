@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.github.tacowasa059.gamingeverything.mixin",
+  "refmap": "${mod_id}.refmap.json",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "AbstractContainerScreenMixin",
+    "AbstractWidgetMixin",
+    "ClientLevelMixin",
+    "GuiMixin",
+    "ItemInHandRendererMixin",
+    "ItemRendererMixin",
+    "LevelRendererMixin",
+    "LivingEntityRendererMixin",
+    "ScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

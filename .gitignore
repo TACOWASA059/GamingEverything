@@ -1,0 +1,10 @@
+.gradle/
+.idea/
+out/
+*.iml
+**/build/
+**/run/
+**/.fabric/
+**/.cache/
+release-artifacts/
+
