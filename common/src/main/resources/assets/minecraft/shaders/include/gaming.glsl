@@ -12,6 +12,16 @@ float gaming_wavelength(int shift) {
     return mix(0.25, 4.0, encoded);
 }
 
+float gaming_gui_wavelength() {
+    float encoded = float((MenuBlurRadius >> 28) & 15) / 15.0;
+    return mix(0.25, 4.0, encoded);
+}
+
+float gaming_gui_speed() {
+    float encoded = float((UseRgss >> 26) & 7) / 7.0;
+    return mix(0.25, 20.0, encoded);
+}
+
 vec3 gaming_rainbow(float phase) {
     return 0.5 + 0.5 * cos(6.2831853 * (phase + vec3(0.0, 0.3333333, 0.6666667)));
 }
