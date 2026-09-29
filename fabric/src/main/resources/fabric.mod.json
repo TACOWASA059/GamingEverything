@@ -6,6 +6,7 @@
   "description": "${description}",
   "authors": ["${mod_author}"],
   "license": "${license}",
+  "icon": "assets/gamingeverything/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": ["com.github.tacowasa059.gamingeverything.fabric.GamingEverythingFabric"]
@@ -18,4 +19,3 @@
     "java": ">=17"
   }
 }
-

@@ -3,3 +3,35 @@ plugins {
     id 'net.neoforged.moddev.legacyforge' version '2.0.77' apply false
 }
 
+tasks.register('prepareRelease') {
+    group = 'distribution'
+    description = 'Builds loader jars and writes a release bundle with SHA-256 checksums.'
+    dependsOn(':fabric:build', ':forge:build')
+
+    doLast {
+        def outputDir = layout.projectDirectory.dir('release-artifacts').asFile
+        delete(outputDir)
+        outputDir.mkdirs()
+
+        [project(':fabric'), project(':forge')].each { loaderProject ->
+            loaderProject.layout.buildDirectory.dir('libs').get().asFile
+                    .listFiles()
+                    .findAll { it.name.endsWith('.jar') && !it.name.endsWith('-sources.jar') && !it.name.endsWith('-javadoc.jar') }
+                    .each { sourceJar ->
+                        copy { from(sourceJar); into(outputDir) }
+                    }
+        }
+
+        outputDir.listFiles().findAll { it.name.endsWith('.jar') }.sort().each { artifact ->
+            def digest = java.security.MessageDigest.getInstance('SHA-256')
+            artifact.withInputStream { stream ->
+                byte[] buffer = new byte[8192]
+                for (int count = stream.read(buffer); count >= 0; count = stream.read(buffer)) {
+                    if (count > 0) digest.update(buffer, 0, count)
+                }
+            }
+            new File(outputDir, artifact.name + '.sha256').text =
+                    digest.digest().collect { String.format('%02x', it) }.join() + '  ' + artifact.name + System.lineSeparator()
+        }
+    }
+}
