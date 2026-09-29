@@ -35,3 +35,19 @@ tasks.register('prepareRelease') {
         }
     }
 }
+
+def curseForgeLoaderProjects = ['fabric', 'forge', 'neoforge']
+        .collect { findProject(":${it}") }
+        .findAll { it != null }
+
+tasks.register('publishCurseForge') {
+    group = 'publishing'
+    description = 'Builds and uploads every loader jar for this branch to CurseForge.'
+    dependsOn curseForgeLoaderProjects.collect { "${it.path}:publishCurseForge" }
+}
+
+tasks.register('publishCurseForgeInfo') {
+    group = 'publishing'
+    description = 'Prints every CurseForge upload for this branch without publishing.'
+    dependsOn curseForgeLoaderProjects.collect { "${it.path}:publishInfo" }
+}
