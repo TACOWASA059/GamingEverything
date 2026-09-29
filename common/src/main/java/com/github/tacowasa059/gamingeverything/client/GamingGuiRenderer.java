@@ -1,11 +1,11 @@
 package com.github.tacowasa059.gamingeverything.client;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class GamingGuiRenderer {
     private GamingGuiRenderer() {}
 
-    public static void renderScreenFrame(GuiGraphics graphics) {
+    public static void renderScreenFrame(GuiGraphicsExtractor graphics) {
         GamingConfig config = GamingConfig.INSTANCE;
         if (!config.enabled || !config.guiEffects) return;
 
@@ -18,7 +18,7 @@ public final class GamingGuiRenderer {
         vertical(graphics, width - 2, width, 2, height - 2, alpha, 0.75F);
     }
 
-    public static void renderWidgetFrame(GuiGraphics graphics, int x, int y, int width, int height,
+    public static void renderWidgetFrame(GuiGraphicsExtractor graphics, int x, int y, int width, int height,
                                          boolean highlighted, boolean active) {
         GamingConfig config = GamingConfig.INSTANCE;
         if (!config.enabled || !config.guiEffects || width < 8 || height < 8) return;
@@ -38,7 +38,7 @@ public final class GamingGuiRenderer {
         }
     }
 
-    public static void renderContainerFrame(GuiGraphics graphics, int x, int y, int width, int height) {
+    public static void renderContainerFrame(GuiGraphicsExtractor graphics, int x, int y, int width, int height) {
         GamingConfig config = GamingConfig.INSTANCE;
         if (!config.enabled || !config.guiEffects || width < 16 || height < 16) return;
 
@@ -52,7 +52,7 @@ public final class GamingGuiRenderer {
         horizontal(graphics, x, x + width, y + height - 3, y + height, glow, 0.55F);
     }
 
-    public static void renderSlotFrame(GuiGraphics graphics, int x, int y, int size) {
+    public static void renderSlotFrame(GuiGraphicsExtractor graphics, int x, int y, int size) {
         GamingConfig config = GamingConfig.INSTANCE;
         if (!config.enabled || !config.guiEffects || size < 8) return;
         int alpha = Math.round(115.0F + 85.0F * config.intensity);
@@ -62,7 +62,7 @@ public final class GamingGuiRenderer {
         vertical(graphics, x + size - 1, x + size, y + 1, y + size - 1, alpha, 0.75F);
     }
 
-    private static void horizontal(GuiGraphics graphics, int x0, int x1, int y0, int y1,
+    private static void horizontal(GuiGraphicsExtractor graphics, int x0, int x1, int y0, int y1,
                                    int alpha, float phaseOffset) {
         int length = Math.max(1, x1 - x0);
         int segments = Math.max(4, Math.min(32, length / 8));
@@ -74,7 +74,7 @@ public final class GamingGuiRenderer {
         }
     }
 
-    private static void vertical(GuiGraphics graphics, int x0, int x1, int y0, int y1,
+    private static void vertical(GuiGraphicsExtractor graphics, int x0, int x1, int y0, int y1,
                                  int alpha, float phaseOffset) {
         int length = Math.max(1, y1 - y0);
         int segments = Math.max(4, Math.min(24, length / 7));

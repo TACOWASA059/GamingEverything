@@ -1,21 +1,28 @@
 plugins {
     id 'multiloader-loader'
-    id 'fabric-loom'
+    id 'net.fabricmc.fabric-loom'
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
-    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation project(':common')
+    minecraft("com.mojang:minecraft:${minecraft_version}")
+    implementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
+    implementation("net.fabricmc.fabric-api:fabric-api:${fabric_version}")
 }
 
 loom {
-    mixin { defaultRefmapName.set("${mod_id}.refmap.json") }
     runs {
-        client { client(); setConfigName('Fabric Client'); ideConfigGenerated(true); runDir('run') }
-        server { server(); setConfigName('Fabric Server'); ideConfigGenerated(true); runDir('run') }
+        client {
+            client()
+            setConfigName('Fabric Client')
+            ideConfigGenerated(true)
+            runDir('runs/client')
+            if (project.hasProperty('graphicsBackend')) {
+                programArgs('--graphicsBackend', project.property('graphicsBackend').toString())
+            }
+            if (project.hasProperty('quickTestWorld')) {
+                programArgs('--quickPlaySingleplayer', project.property('quickTestWorld').toString())
+            }
+        }
+        server { server(); setConfigName('Fabric Server'); ideConfigGenerated(true); runDir('runs/server') }
     }
 }

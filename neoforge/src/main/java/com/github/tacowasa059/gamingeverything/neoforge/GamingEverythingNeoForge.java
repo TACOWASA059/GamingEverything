@@ -8,6 +8,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
@@ -19,6 +20,8 @@ import org.lwjgl.glfw.GLFW;
 
 @Mod(value = GamingEverything.MOD_ID, dist = Dist.CLIENT)
 public final class GamingEverythingNeoForge {
+    private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(
+            Identifier.fromNamespaceAndPath("gamingeverything", "main"));
     private KeyMapping settingsKey;
 
     public GamingEverythingNeoForge(IEventBus modBus) {
@@ -48,8 +51,7 @@ public final class GamingEverythingNeoForge {
     }
 
     private void registerKeys(RegisterKeyMappingsEvent event) {
-        settingsKey = new KeyMapping("key.gamingeverything.settings", GLFW.GLFW_KEY_G,
-                "key.categories.gamingeverything");
+        settingsKey = new KeyMapping("key.gamingeverything.settings", GLFW.GLFW_KEY_G, CATEGORY);
         event.register(settingsKey);
         GamingClient.initialize(settingsKey);
     }
@@ -58,4 +60,3 @@ public final class GamingEverythingNeoForge {
         if (settingsKey != null) GamingClient.tick(Minecraft.getInstance());
     }
 }
-

@@ -1,6 +1,6 @@
 package com.github.tacowasa059.gamingeverything.client;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,7 +25,7 @@ public final class GamingAnimationSettingsScreen extends Screen {
         int x = width / 2 - 155;
         int y = height / 2 - 68;
         addRenderableWidget(Button.builder(category.label(), b ->
-                        minecraft.setScreen(new GamingAnimationSettingsScreen(parent, category.next())))
+                        minecraft.gui.setScreen(new GamingAnimationSettingsScreen(parent, category.next())))
                 .bounds(x, y, 310, 20).build());
         y += 32;
         addRenderableWidget(new CategorySpeedSlider(x, y, 310, 20));
@@ -39,17 +39,16 @@ public final class GamingAnimationSettingsScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(graphics, mouseX, mouseY, partialTick);
-        graphics.drawCenteredString(font, title, width / 2, height / 2 - 104,
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        graphics.centeredText(font, title, width / 2, height / 2 - 104,
                 RainbowColor.rgb(0.0F, GamingConfig.INSTANCE.guiSpeed));
-        super.render(graphics, mouseX, mouseY, partialTick);
+        super.extractRenderState(graphics, mouseX, mouseY, partialTick);
     }
 
     @Override
     public void onClose() {
         GamingConfig.save();
-        minecraft.setScreen(parent);
+        minecraft.gui.setScreen(parent);
     }
 
     private final class CategorySpeedSlider extends AbstractSliderButton {

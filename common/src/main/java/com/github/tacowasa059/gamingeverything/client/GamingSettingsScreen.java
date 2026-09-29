@@ -1,6 +1,6 @@
 package com.github.tacowasa059.gamingeverything.client;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -38,7 +38,7 @@ public final class GamingSettingsScreen extends Screen {
         addToggle(right, y, "screen.gamingeverything.special", () -> c.specialEffects, v -> c.specialEffects = v);
         y += 28;
         addRenderableWidget(Button.builder(Component.translatable("screen.gamingeverything.animation"),
-                        b -> minecraft.setScreen(new GamingAnimationSettingsScreen(this)))
+                        b -> minecraft.gui.setScreen(new GamingAnimationSettingsScreen(this)))
                 .bounds(left, y, 310, 20).build());
         y += 28;
         addRenderableWidget(new IntensitySlider(left, y, 310, 20));
@@ -62,17 +62,16 @@ public final class GamingSettingsScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(graphics, mouseX, mouseY, partialTick);
-        graphics.drawCenteredString(font, title, width / 2, height / 2 - 130,
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        graphics.centeredText(font, title, width / 2, height / 2 - 130,
                 RainbowColor.rgb(0.0F, GamingConfig.INSTANCE.guiSpeed));
-        super.render(graphics, mouseX, mouseY, partialTick);
+        super.extractRenderState(graphics, mouseX, mouseY, partialTick);
     }
 
     @Override
     public void onClose() {
         GamingConfig.save();
-        minecraft.setScreen(parent);
+        minecraft.gui.setScreen(parent);
     }
 
     private static final class IntensitySlider extends net.minecraft.client.gui.components.AbstractSliderButton {

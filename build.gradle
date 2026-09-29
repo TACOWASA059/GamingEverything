@@ -1,20 +1,19 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT' apply false
-    id 'net.minecraftforge.gradle' version '6.0.54' apply false
-    id 'net.neoforged.moddev' version '2.0.141' apply false
+    id 'net.fabricmc.fabric-loom' version '1.16.3' apply false
+    id 'net.neoforged.moddev' version '2.0.147' apply false
 }
 
 tasks.register('prepareRelease') {
     group = 'distribution'
     description = 'Builds loader jars and writes a release bundle with SHA-256 checksums.'
-    dependsOn(':fabric:build', ':forge:build', ':neoforge:build')
+    dependsOn(':fabric:build', ':neoforge:build')
 
     doLast {
         def outputDir = layout.projectDirectory.dir('release-artifacts').asFile
         project.delete(outputDir)
         outputDir.mkdirs()
 
-        [project(':fabric'), project(':forge'), project(':neoforge')].each { loaderProject ->
+        [project(':fabric'), project(':neoforge')].each { loaderProject ->
             loaderProject.layout.buildDirectory.dir('libs').get().asFile
                     .listFiles()
                     .findAll {

@@ -9,6 +9,14 @@ neoForge {
         client {
             client()
             gameDirectory = file('run')
+            if (project.hasProperty('graphicsBackend')) {
+                programArgument('--graphicsBackend')
+                programArgument(project.property('graphicsBackend').toString())
+            }
+            if (project.hasProperty('quickTestWorld')) {
+                programArgument('--quickPlaySingleplayer')
+                programArgument(project.property('quickTestWorld').toString())
+            }
         }
     }
     mods {

@@ -1,7 +1,7 @@
 package com.github.tacowasa059.gamingeverything.mixin;
 
 import com.github.tacowasa059.gamingeverything.client.GamingGuiRenderer;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
@@ -20,8 +20,8 @@ public abstract class AbstractContainerScreenMixin {
     @Shadow protected int topPos;
     @Shadow @Final protected AbstractContainerMenu menu;
 
-    @Inject(method = "render", at = @At("TAIL"))
-    private void gamingeverything$renderGamingContainerFrame(GuiGraphics graphics, int mouseX, int mouseY,
+    @Inject(method = "extractRenderState", at = @At("TAIL"))
+    private void gamingeverything$renderGamingContainerFrame(GuiGraphicsExtractor graphics, int mouseX, int mouseY,
                                                               float partialTick, CallbackInfo ci) {
         GamingGuiRenderer.renderContainerFrame(graphics, leftPos, topPos, imageWidth, imageHeight);
         for (Slot slot : menu.slots) {

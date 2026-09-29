@@ -4,7 +4,7 @@ out/
 *.iml
 **/build/
 **/run/
+**/runs/
 **/.fabric/
 **/.cache/
 release-artifacts/
-

@@ -1,11 +1,11 @@
 package com.github.tacowasa059.gamingeverything.client;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 
 public final class GamingOverlay {
     private GamingOverlay() {}
 
-    public static void render(GuiGraphics graphics) {
+    public static void render(GuiGraphicsExtractor graphics) {
         GamingConfig config = GamingConfig.INSTANCE;
         if (!config.enabled) return;
 

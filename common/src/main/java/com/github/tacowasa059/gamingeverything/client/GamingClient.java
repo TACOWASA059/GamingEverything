@@ -17,7 +17,7 @@ public final class GamingClient {
     public static void tick(Minecraft minecraft) {
         if (settingsKey != null) {
             while (settingsKey.consumeClick()) {
-                minecraft.setScreen(new GamingSettingsScreen(minecraft.screen));
+                minecraft.gui.setScreen(new GamingSettingsScreen(minecraft.gui.screen()));
             }
         }
         GamingConfig config = GamingConfig.INSTANCE;
@@ -26,12 +26,11 @@ public final class GamingClient {
             return;
         }
         double angle = minecraft.player.tickCount * 0.28D;
-        double radius = 0.75D + minecraft.level.random.nextDouble() * 0.65D;
-        minecraft.level.addParticle(new DustParticleOptions(RainbowColor.vector((float) (angle / 30.0D)), 0.8F),
+        double radius = 0.75D + minecraft.level.getRandom().nextDouble() * 0.65D;
+        minecraft.level.addParticle(new DustParticleOptions(RainbowColor.rgb((float) (angle / 30.0D)), 0.8F),
                 minecraft.player.getX() + Math.cos(angle) * radius,
-                minecraft.player.getY() + 0.15D + minecraft.level.random.nextDouble() * 1.7D,
+                minecraft.player.getY() + 0.15D + minecraft.level.getRandom().nextDouble() * 1.7D,
                 minecraft.player.getZ() + Math.sin(angle) * radius,
                 0.0D, 0.012D, 0.0D);
     }
 }
-

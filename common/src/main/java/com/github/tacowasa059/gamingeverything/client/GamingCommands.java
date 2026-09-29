@@ -8,7 +8,7 @@ public final class GamingCommands {
 
     public static int open() {
         Minecraft minecraft = Minecraft.getInstance();
-        minecraft.tell(() -> minecraft.setScreen(new GamingSettingsScreen(null)));
+        minecraft.execute(() -> minecraft.gui.setScreen(new GamingSettingsScreen(null)));
         return 1;
     }
 
@@ -56,11 +56,11 @@ public final class GamingCommands {
     private static void message(String category, boolean enabled) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player != null) {
-            minecraft.player.displayClientMessage(Component.translatable(
+            minecraft.player.sendSystemMessage(Component.translatable(
                     "command.gamingeverything.changed",
                     Component.translatable("command.gamingeverything.category." + category),
                     Component.translatable(enabled
-                            ? "screen.gamingeverything.on" : "screen.gamingeverything.off")), false);
+                            ? "screen.gamingeverything.on" : "screen.gamingeverything.off")));
         }
     }
 }
