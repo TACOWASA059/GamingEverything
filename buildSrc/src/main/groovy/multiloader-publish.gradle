@@ -1,0 +1,61 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
+plugins {
+    id 'net.darkhax.curseforgegradle'
+}
+
+def loader = project.name
+def loaderName = ['fabric': 'Fabric', 'forge': 'Forge', 'neoforge': 'NeoForge']
+        .getOrDefault(loader, loader.capitalize())
+def supportedVersions = supported_versions.split(',').collect { it.trim() }.findAll { it }
+def changelogFile = rootProject.file('CHANGELOG.md')
+def releaseNotes = changelogFile.exists()
+        ? changelogFile.text.trim()
+        : "${mod_name} ${version} for Minecraft ${minecraft_version}." as String
+def uploadJar = tasks.named('jar')
+
+tasks.register('publishCurseForge', TaskPublishCurseForge) {
+    group = 'publishing'
+    description = "Builds and uploads the ${loaderName} jar to CurseForge."
+    dependsOn uploadJar
+    apiToken = System.getenv('CURSEFORGE_TOKEN')
+
+    doFirst {
+        if (!curseforge_id) {
+            throw new GradleException('curseforge_id is not set in gradle.properties.')
+        }
+        if (!System.getenv('CURSEFORGE_TOKEN')) {
+            throw new GradleException('CURSEFORGE_TOKEN is not set.')
+        }
+    }
+
+    def mainFile = upload(curseforge_id ?: '000000', uploadJar)
+    mainFile.releaseType = release_type
+    mainFile.changelog = releaseNotes
+    mainFile.changelogType = 'markdown'
+    mainFile.addModLoader(loaderName)
+    supportedVersions.each { mainFile.addGameVersion(it) }
+    curseforge_environments.split(',').collect { it.trim() }.findAll { it }.each {
+        mainFile.addGameVersion(it)
+    }
+    if (loader == 'fabric') {
+        mainFile.addRequirement('fabric-api')
+    }
+}
+
+tasks.register('publishInfo') {
+    group = 'publishing'
+    description = "Prints the ${loaderName} CurseForge upload without publishing."
+    doLast {
+        logger.lifecycle("""
+            CurseForge upload
+              project     : ${curseforge_id}
+              loader      : ${loaderName}
+              minecraft   : ${supportedVersions.join(', ')}
+              environment : ${curseforge_environments}
+              release     : ${release_type}
+              file        : ${uploadJar.get().archiveFileName.get()}
+              Fabric API  : ${loader == 'fabric' ? 'required' : 'not applicable'}
+        """.stripIndent())
+    }
+}

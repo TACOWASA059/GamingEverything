@@ -11,6 +11,7 @@ buildscript {
 plugins {
     id 'multiloader-loader'
     id 'net.minecraftforge.gradle'
+    id 'multiloader-publish'
 }
 
 apply plugin: 'org.spongepowered.mixin'
