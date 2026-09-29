@@ -19,7 +19,7 @@ flat out float gamingVertexPhase;
 
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
-    vertexDistance = fog_distance(ModelViewMat, IViewRotMat * Position, FogShape);
+    vertexDistance = fog_distance(Position, FogShape);
     vertexColor = Color * ColorModulator * texelFetch(Sampler2, UV2 / 16, 0);
     gamingVertexPhase = float(gl_VertexID) * 0.065;
 }

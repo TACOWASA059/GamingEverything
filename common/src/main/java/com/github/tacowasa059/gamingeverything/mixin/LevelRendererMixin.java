@@ -25,7 +25,7 @@ public abstract class LevelRendererMixin {
     }
 
     @ModifyArg(method = "renderSnowAndRain", at = @At(value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;color(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"), index = 0)
+            target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setColor(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"), index = 0)
     private float gamingeverything$rainbowWeatherRed(float original) {
         GamingConfig config = GamingConfig.INSTANCE;
         if (!config.enabled || !config.specialEffects) return original;
@@ -36,7 +36,7 @@ public abstract class LevelRendererMixin {
     }
 
     @ModifyArg(method = "renderSnowAndRain", at = @At(value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;color(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"), index = 1)
+            target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setColor(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"), index = 1)
     private float gamingeverything$rainbowWeatherGreen(float original) {
         GamingConfig config = GamingConfig.INSTANCE;
         if (!config.enabled || !config.specialEffects) return original;
@@ -46,7 +46,7 @@ public abstract class LevelRendererMixin {
     }
 
     @ModifyArg(method = "renderSnowAndRain", at = @At(value = "INVOKE",
-            target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;color(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"), index = 2)
+            target = "Lcom/mojang/blaze3d/vertex/VertexConsumer;setColor(FFFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;"), index = 2)
     private float gamingeverything$rainbowWeatherBlue(float original) {
         GamingConfig config = GamingConfig.INSTANCE;
         if (!config.enabled || !config.specialEffects) return original;

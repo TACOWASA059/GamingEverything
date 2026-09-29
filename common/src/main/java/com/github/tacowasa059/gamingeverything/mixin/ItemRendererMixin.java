@@ -35,21 +35,21 @@ public abstract class ItemRendererMixin {
         Integer value = GAMING_QUAD.get();
         return value == null ? 0.12F : 0.12F + value * 0.145F;
     }
-    @ModifyVariable(method = "renderQuadList", at = @At("STORE"), ordinal = 0)
+    @ModifyVariable(method = "renderQuadList", at = @At("STORE"), ordinal = 1)
     private float gamingeverything$tintItemRed(float original) {
         GamingConfig c = GamingConfig.INSTANCE;
         return c.enabled && c.items
                 ? RainbowColor.tint(original, quadPhase(), 0, c.intensity, c.itemSpeed) : original;
     }
 
-    @ModifyVariable(method = "renderQuadList", at = @At("STORE"), ordinal = 1)
+    @ModifyVariable(method = "renderQuadList", at = @At("STORE"), ordinal = 2)
     private float gamingeverything$tintItemGreen(float original) {
         GamingConfig c = GamingConfig.INSTANCE;
         return c.enabled && c.items
                 ? RainbowColor.tint(original, quadPhase(), 1, c.intensity, c.itemSpeed) : original;
     }
 
-    @ModifyVariable(method = "renderQuadList", at = @At("STORE"), ordinal = 2)
+    @ModifyVariable(method = "renderQuadList", at = @At("STORE"), ordinal = 3)
     private float gamingeverything$tintItemBlue(float original) {
         GamingConfig c = GamingConfig.INSTANCE;
         float result = c.enabled && c.items

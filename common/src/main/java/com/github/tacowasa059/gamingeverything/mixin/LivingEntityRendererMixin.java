@@ -36,28 +36,22 @@ public abstract class LivingEntityRendererMixin {
         return value == null ? 0.0F : value;
     }
 
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/EntityModel;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V"), index = 4)
-    private float gamingeverything$tintEntityRed(float original) {
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/EntityModel;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V"), index = 4)
+    private int gamingeverything$tintEntityColor(int original) {
         GamingConfig c = GamingConfig.INSTANCE;
-        return c.enabled && c.entities
-                ? RainbowColor.tint(original, phase(), 0, c.intensity, c.entitySpeed) : original;
+        if (!c.enabled || !c.entities) return original;
+
+        int alpha = (original >>> 24) & 0xFF;
+        float red = ((original >>> 16) & 0xFF) / 255.0F;
+        float green = ((original >>> 8) & 0xFF) / 255.0F;
+        float blue = (original & 0xFF) / 255.0F;
+        int tintedRed = Math.round(RainbowColor.tint(red, phase(), 0, c.intensity, c.entitySpeed) * 255.0F);
+        int tintedGreen = Math.round(RainbowColor.tint(green, phase(), 1, c.intensity, c.entitySpeed) * 255.0F);
+        int tintedBlue = Math.round(RainbowColor.tint(blue, phase(), 2, c.intensity, c.entitySpeed) * 255.0F);
+        return alpha << 24 | tintedRed << 16 | tintedGreen << 8 | tintedBlue;
     }
 
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/EntityModel;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V"), index = 5)
-    private float gamingeverything$tintEntityGreen(float original) {
-        GamingConfig c = GamingConfig.INSTANCE;
-        return c.enabled && c.entities
-                ? RainbowColor.tint(original, phase(), 1, c.intensity, c.entitySpeed) : original;
-    }
-
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/EntityModel;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V"), index = 6)
-    private float gamingeverything$tintEntityBlue(float original) {
-        GamingConfig c = GamingConfig.INSTANCE;
-        return c.enabled && c.entities
-                ? RainbowColor.tint(original, phase(), 2, c.intensity, c.entitySpeed) : original;
-    }
-
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/EntityModel;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;IIFFFF)V"), index = 2)
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/EntityModel;renderToBuffer(Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;III)V"), index = 2)
     private int gamingeverything$brightEntity(int original) {
         GamingConfig c = GamingConfig.INSTANCE;
         return c.enabled && c.entities ? LightTexture.FULL_BRIGHT : original;

@@ -18,7 +18,7 @@ out vec2 gamingUv;
 
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
-    vertexDistance = fog_distance(ModelViewMat, IViewRotMat * Position, FogShape);
+    vertexDistance = fog_distance(Position, FogShape);
     vertexColor = Color;
     texCoord0 = UV0;
     gamingUv = UV0;
