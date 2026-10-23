@@ -1,3 +1,6 @@
+#ifndef GAMING_EVERYTHING_GLSL
+#define GAMING_EVERYTHING_GLSL
+
 bool gaming_flag(int bit) {
     return (UseRgss & (1 << bit)) != 0;
 }
@@ -39,3 +42,5 @@ vec3 gaming_colorize(vec3 base, vec3 position, float speed, float wavelength) {
                       rainbow * (0.52 + luminance * 1.58), 0.78);
     return mix(base, bright, GlintAlpha);
 }
+
+#endif

@@ -1,26 +1,57 @@
 #version 330
+#extension GL_ARB_separate_shader_objects : require
 
-#moj_import <minecraft:fog.glsl>
-#moj_import <minecraft:globals.glsl>
-#moj_import <minecraft:chunksection.glsl>
-#moj_import <minecraft:gaming.glsl>
+#include <minecraft:fog.glsl>
+#include <minecraft:globals.glsl>
+#include <minecraft:texture_sampling.glsl>
+#include <minecraft:oit.glsl>
+#include <minecraft:terrainglobals.glsl>
+#ifndef MULTIDRAW_TERRAIN
+    #include <minecraft:chunksection.glsl>
+#endif
+#include <minecraft:gaming.glsl>
+
 uniform sampler2D Sampler0;
-in float sphericalVertexDistance;
-in float cylindricalVertexDistance;
-in vec4 vertexColor;
-in vec2 texCoord0;
-in vec3 gamingPosition;
-out vec4 fragColor;
+
+layout(location = 0) in float sphericalVertexDistance;
+layout(location = 1) in float cylindricalVertexDistance;
+layout(location = 2) in vec4 vertexColor;
+layout(location = 3) in vec2 texCoord0;
+layout(location = 4) in float chunkVisibility;
+layout(location = 5) in vec3 gamingPosition;
+
+#ifndef OIT_ALPHA_ONLY
+layout(location = 0) out vec4 fragColor;
+#endif
+
+vec4 calculateFinalColor(vec4 color) {
+    #ifdef OIT_ACCUMULATE
+    color = sampleColorForAccumulation(color);
+    vec4 fogColor = vec4(FogColor.rgb * color.a, FogColor.a);
+    #else
+    vec4 fogColor = FogColor;
+    #endif
+    return apply_fog(color, sphericalVertexDistance, cylindricalVertexDistance, FogEnvironmentalStart, FogEnvironmentalEnd, FogRenderDistanceStart, FogRenderDistanceEnd, fogColor);
+}
 
 void main() {
-    vec4 color = texture(Sampler0, texCoord0) * vertexColor;
-    color = mix(FogColor * vec4(1.0, 1.0, 1.0, color.a), color, ChunkVisibility);
-#ifdef ALPHA_CUTOUT
-    if (color.a < ALPHA_CUTOUT) discard;
-#endif
+    vec4 color = (UseRgss == 1 ? sampleRGSS(Sampler0, texCoord0, 1.0f / TextureSize) : sampleNearest(Sampler0, texCoord0, 1.0f / TextureSize)) * vertexColor;
+    #ifndef OIT_ALPHA_ONLY
+    color = mix(FogColor * vec4(1, 1, 1, color.a), color, chunkVisibility);
+    #endif
+    #ifdef ALPHA_CUTOUT
+    if (color.a < ALPHA_CUTOUT) {
+        discard;
+    }
+    #endif
+
     if (gaming_flag(0) && gaming_flag(1)) {
         color.rgb = gaming_colorize(color.rgb, gamingPosition, gaming_speed(6), gaming_wavelength(4));
     }
-    fragColor = apply_fog(color, sphericalVertexDistance, cylindricalVertexDistance,
-        FogEnvironmentalStart, FogEnvironmentalEnd, FogRenderDistanceStart, FogRenderDistanceEnd, FogColor);
+
+    #ifdef OIT_ALPHA_ONLY
+    executeAlphaOnlyPhase(gl_FragCoord.z, color.a);
+    #else
+    fragColor = calculateFinalColor(color);
+    #endif
 }
