@@ -9,9 +9,9 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
 
 public final class GamingEverythingFabric implements ClientModInitializer {
     private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(
@@ -20,7 +20,7 @@ public final class GamingEverythingFabric implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         KeyMapping key = KeyMappingHelper.registerKeyMapping(new KeyMapping(
-                "key.gamingeverything.settings", GLFW.GLFW_KEY_G, CATEGORY));
+                "key.gamingeverything.settings", InputConstants.KEY_G, CATEGORY));
         GamingClient.initialize(key);
         ClientTickEvents.END_CLIENT_TICK.register(GamingClient::tick);
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->

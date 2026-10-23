@@ -11,6 +11,7 @@ No server installation is required. Press **G** in game, or run **`/gaming`**, t
 | 1.20.1 | Yes | Yes | No |
 | 1.21.1 | Yes | Yes | Yes |
 | 26.2 | Yes | No | Yes |
+| 26.3 | Yes | No | Yes |
 
 Use a jar whose Minecraft version and mod loader exactly match your instance.
 

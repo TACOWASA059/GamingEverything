@@ -2,11 +2,10 @@ package com.github.tacowasa059.gamingeverything.mixin;
 
 import com.github.tacowasa059.gamingeverything.client.GamingConfig;
 import com.github.tacowasa059.gamingeverything.client.GamingUniformEncoding;
-import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.Std140Builder;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
 import java.nio.ByteBuffer;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GlobalSettingsUniform;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -26,7 +25,7 @@ public abstract class GlobalSettingsUniformMixin {
      * sliders update without rebuilding chunks and without using camera-relative phase.
      */
     @Overwrite
-    public void update(int width, int height, double glintAlpha, long gameTime, DeltaTracker deltaTracker,
+    public void update(int width, int height, double glintAlpha, long gameTime, float worldPartialTicks,
                        int menuBlurRadius, Vec3 cameraPos, boolean useRgss) {
         try (MemoryStack stack = MemoryStack.stackPush()) {
             int cameraX = Mth.floor(cameraPos.x);
@@ -34,12 +33,11 @@ public abstract class GlobalSettingsUniformMixin {
             int cameraZ = Mth.floor(cameraPos.z);
             ByteBuffer data = Std140Builder.onStack(stack, GlobalSettingsUniform.UBO_SIZE)
                     .putIVec3(cameraX, cameraY, cameraZ)
+                    .putFloat(GamingConfig.INSTANCE.intensity)
                     .putVec3((float) (cameraX - cameraPos.x), (float) (cameraY - cameraPos.y),
                             (float) (cameraZ - cameraPos.z))
+                    .putFloat(((float) (gameTime % 24000L) + worldPartialTicks) / 24000.0F)
                     .putVec2(width, height)
-                    .putFloat(GamingConfig.INSTANCE.intensity)
-                    .putFloat(((float) (gameTime % 24000L)
-                            + deltaTracker.getGameTimeDeltaPartialTick(false)) / 24000.0F)
                     .putInt(GamingUniformEncoding.blurAndWavelengths(menuBlurRadius))
                     .putInt(GamingUniformEncoding.flagsAndSpeeds(useRgss))
                     .get();

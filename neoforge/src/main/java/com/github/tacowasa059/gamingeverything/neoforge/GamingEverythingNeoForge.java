@@ -3,6 +3,7 @@ package com.github.tacowasa059.gamingeverything.neoforge;
 import com.github.tacowasa059.gamingeverything.GamingEverything;
 import com.github.tacowasa059.gamingeverything.client.GamingClient;
 import com.github.tacowasa059.gamingeverything.client.GamingCommands;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -16,7 +17,6 @@ import net.neoforged.neoforge.client.event.RegisterClientCommandsEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import org.lwjgl.glfw.GLFW;
 
 @Mod(value = GamingEverything.MOD_ID, dist = Dist.CLIENT)
 public final class GamingEverythingNeoForge {
@@ -51,7 +51,7 @@ public final class GamingEverythingNeoForge {
     }
 
     private void registerKeys(RegisterKeyMappingsEvent event) {
-        settingsKey = new KeyMapping("key.gamingeverything.settings", GLFW.GLFW_KEY_G, CATEGORY);
+        settingsKey = new KeyMapping("key.gamingeverything.settings", InputConstants.KEY_G, CATEGORY);
         event.register(settingsKey);
         GamingClient.initialize(settingsKey);
     }

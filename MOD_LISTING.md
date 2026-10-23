@@ -19,6 +19,7 @@ Supported releases:
 - Minecraft 1.20.1: Fabric and Forge
 - Minecraft 1.21.1: Fabric, Forge, and NeoForge
 - Minecraft 26.2: Fabric and NeoForge
+- Minecraft 26.3: Fabric and NeoForge
 
 Commands include `/gaming`, `/gaming on`, `/gaming off`, `/gaming toggle`, and per-category controls such as `/gaming blocks off` or `/gaming sky toggle`.
 
@@ -39,6 +40,7 @@ Gaming Everythingは、Minecraft全体をゲーミングPCのように刻々と�
 - Minecraft 1.20.1：Fabric / Forge
 - Minecraft 1.21.1：Fabric / Forge / NeoForge
 - Minecraft 26.2：Fabric / NeoForge
+- Minecraft 26.3：Fabric / NeoForge
 
 `/gaming`、`/gaming on`、`/gaming off`、`/gaming toggle`のほか、`/gaming blocks off`や`/gaming sky toggle`のようにカテゴリ単位で操作できます。
 
